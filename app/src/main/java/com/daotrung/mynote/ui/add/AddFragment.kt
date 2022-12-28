@@ -18,8 +18,7 @@ import com.daotrung.mynote.viewmodel.TaskViewModel
 
 
 class AddFragment : Fragment() {
-
-    private val viewModel : TaskViewModel by viewModels()
+    private val viewModel: TaskViewModel by viewModels()
 
     private var _binding: FragmentAddBinding? = null
 
@@ -27,33 +26,29 @@ class AddFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAddBinding.inflate(inflater,container,false)
+    ): View {
+        _binding = FragmentAddBinding.inflate(inflater, container, false)
 
         val myAdapter = ArrayAdapter<String>(
-            requireActivity(),android.R.layout.simple_spinner_dropdown_item,
+            requireActivity(), android.R.layout.simple_spinner_dropdown_item,
             resources.getStringArray(R.array.priorities)
         )
 
         binding.apply {
             spinner.adapter = myAdapter
             btnAdd.setOnClickListener {
-                if(TextUtils.isEmpty(edtTask.text)){
-                    Toast.makeText(requireContext(),"It is empty",Toast.LENGTH_SHORT).show()
+                if (TextUtils.isEmpty(edtTask.text)) {
+                    Toast.makeText(requireContext(), "It is empty", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
                 val title_str = edtTask.text.toString()
                 val priority = spinner.selectedItemPosition
 
-                val taskEntry = TaskEntry(
-                    0,title_str,priority,System.currentTimeMillis()
-                )
+                val taskEntry = TaskEntry(0, title_str, priority, System.currentTimeMillis())
                 viewModel.insert(taskEntry)
-                Toast.makeText(requireContext(),"Successfully added",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Successfully added", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_addFragment_to_taskFragment)
-
-
             }
         }
         return binding.root
